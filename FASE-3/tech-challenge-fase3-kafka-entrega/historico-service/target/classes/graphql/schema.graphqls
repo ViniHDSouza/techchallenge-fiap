@@ -1,0 +1,64 @@
+"""
+Define o schema GraphQL para o serviço de histórico.
+Permite consultar informações sobre pacientes, médicos, enfermeiros e consultas.
+"""
+type Query {
+    """Busca todas as consultas de um paciente específico."""
+    consultasPorPaciente(pacienteId: ID!): [Consulta]
+    """Busca todas as consultas futuras de um paciente específico."""
+    consultasFuturasPorPaciente(pacienteId: ID!): [Consulta]
+    """Busca todas as consultas de um médico específico."""
+    consultasPorMedico(medicoId: ID!): [Consulta]
+    """Busca todas as consultas de um enfermeiro específico."""
+    consultasPorEnfermeiro(enfermeiroId: ID!): [Consulta]
+    """Busca uma consulta específica pelo seu ID."""
+    consulta(id: ID!): Consulta
+    """Lista todos os pacientes cadastrados."""
+    pacientes: [Paciente]
+    """Lista todos os médicos cadastrados."""
+    medicos: [Medico]
+    """Lista todos os enfermeiros cadastrados."""
+    enfermeiros: [Enfermeiro]
+}
+
+"""Representa um paciente no sistema."""
+type Paciente {
+    id: ID!
+    nome: String!
+    email: String!
+    telefone: String
+}
+
+"""Representa um médico no sistema."""
+type Medico {
+    id: ID!
+    nome: String!
+    especialidade: String
+    crm: String!
+}
+
+"""Representa um enfermeiro no sistema."""
+type Enfermeiro {
+    id: ID!
+    nome: String!
+    coren: String!
+}
+
+"""Representa uma consulta agendada."""
+type Consulta {
+    id: ID!
+    paciente: Paciente!
+    medico: Medico
+    enfermeiro: Enfermeiro
+    dataHora: String! # Usar String para LocalDateTime, o Spring GraphQL lida com a conversão
+    status: StatusConsulta!
+    observacoes: String
+}
+
+"""Enumeração dos possíveis status de uma consulta."""
+enum StatusConsulta {
+    AGENDADA
+    REALIZADA
+    CANCELADA
+}
+

@@ -1,0 +1,37 @@
+-------------------------------------------------------------------------------
+Test set: br.com.fiap.techchallenge.notificacao.service.NotificacaoConsumerTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 5.594 s <<< FAILURE! -- in br.com.fiap.techchallenge.notificacao.service.NotificacaoConsumerTest
+br.com.fiap.techchallenge.notificacao.service.NotificacaoConsumerTest.deveLogarErroQuandoProcessamentoFalhar -- Time elapsed: 5.360 s <<< ERROR!
+java.lang.IllegalStateException: Could not access method or field: Can not set static final org.slf4j.Logger field br.com.fiap.techchallenge.notificacao.service.NotificacaoConsumer.logger to org.slf4j.Logger$MockitoMock$2oxURoGM
+	at org.springframework.util.ReflectionUtils.handleReflectionException(ReflectionUtils.java:107)
+	at org.springframework.util.ReflectionUtils.setField(ReflectionUtils.java:654)
+	at org.springframework.test.util.ReflectionTestUtils.setField(ReflectionTestUtils.java:201)
+	at org.springframework.test.util.ReflectionTestUtils.setField(ReflectionTestUtils.java:123)
+	at br.com.fiap.techchallenge.notificacao.service.NotificacaoConsumerTest.setUp(NotificacaoConsumerTest.java:32)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+br.com.fiap.techchallenge.notificacao.service.NotificacaoConsumerTest.deveProcessarMensagemAtualizacaoComSucesso -- Time elapsed: 0.022 s <<< ERROR!
+java.lang.IllegalStateException: Could not access method or field: Can not set static final org.slf4j.Logger field br.com.fiap.techchallenge.notificacao.service.NotificacaoConsumer.logger to org.slf4j.Logger$MockitoMock$2oxURoGM
+	at org.springframework.util.ReflectionUtils.handleReflectionException(ReflectionUtils.java:107)
+	at org.springframework.util.ReflectionUtils.setField(ReflectionUtils.java:654)
+	at org.springframework.test.util.ReflectionTestUtils.setField(ReflectionTestUtils.java:201)
+	at org.springframework.test.util.ReflectionTestUtils.setField(ReflectionTestUtils.java:123)
+	at br.com.fiap.techchallenge.notificacao.service.NotificacaoConsumerTest.setUp(NotificacaoConsumerTest.java:32)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+br.com.fiap.techchallenge.notificacao.service.NotificacaoConsumerTest.deveProcessarMensagemCriacaoComSucesso -- Time elapsed: 0.010 s <<< ERROR!
+java.lang.IllegalStateException: Could not access method or field: Can not set static final org.slf4j.Logger field br.com.fiap.techchallenge.notificacao.service.NotificacaoConsumer.logger to org.slf4j.Logger$MockitoMock$2oxURoGM
+	at org.springframework.util.ReflectionUtils.handleReflectionException(ReflectionUtils.java:107)
+	at org.springframework.util.ReflectionUtils.setField(ReflectionUtils.java:654)
+	at org.springframework.test.util.ReflectionTestUtils.setField(ReflectionTestUtils.java:201)
+	at org.springframework.test.util.ReflectionTestUtils.setField(ReflectionTestUtils.java:123)
+	at br.com.fiap.techchallenge.notificacao.service.NotificacaoConsumerTest.setUp(NotificacaoConsumerTest.java:32)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

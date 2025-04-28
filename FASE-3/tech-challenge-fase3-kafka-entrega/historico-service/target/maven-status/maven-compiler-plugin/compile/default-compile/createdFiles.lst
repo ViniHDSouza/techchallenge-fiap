@@ -1,0 +1,11 @@
+br\com\fiap\techchallenge\historico\repository\MedicoRepository.class
+br\com\fiap\techchallenge\historico\model\Medico.class
+br\com\fiap\techchallenge\historico\repository\ConsultaRepository.class
+br\com\fiap\techchallenge\historico\repository\PacienteRepository.class
+br\com\fiap\techchallenge\historico\model\Enfermeiro.class
+br\com\fiap\techchallenge\historico\repository\EnfermeiroRepository.class
+br\com\fiap\techchallenge\historico\controller\HistoricoController.class
+br\com\fiap\techchallenge\historico\HistoricoServiceApplication.class
+br\com\fiap\techchallenge\historico\model\Paciente.class
+br\com\fiap\techchallenge\historico\model\Consulta.class
+br\com\fiap\techchallenge\historico\model\StatusConsulta.class

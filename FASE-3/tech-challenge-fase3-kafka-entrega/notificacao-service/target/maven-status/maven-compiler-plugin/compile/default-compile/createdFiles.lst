@@ -1,0 +1,4 @@
+br\com\fiap\techchallenge\notificacao\config\KafkaCustomConfig.class
+br\com\fiap\techchallenge\notificacao\NotificacaoServiceApplication.class
+br\com\fiap\techchallenge\dto\ConsultaNotificacaoDTO.class
+br\com\fiap\techchallenge\notificacao\service\NotificacaoConsumer.class

@@ -1,0 +1,138 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-1234-abcdef123456",
+		"name": "FIAP - Meu TechChalange - FASE 3 | Tech Challenge Fase 3 - Agendamento Service (Kafka)",
+		"description": "Collection para testar a API REST do serviço de agendamento de consultas (com Kafka).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Listar Todas as Consultas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/consultas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"consultas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar Consulta por ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/consultas/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"consultas",
+						"1" 
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agendar Nova Consulta",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"paciente\": {\"id\": 1}, \n    \"medico\": {\"id\": 1}, \n    \"dataHora\": \"2025-12-15T14:00:00\", \n    \"observacoes\": \"Agendamento via Postman (Kafka)\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/consultas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"consultas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar Consulta (Remarcar)",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"paciente\": {\"id\": 1}, \n    \"medico\": {\"id\": 1}, \n    \"dataHora\": \"2025-12-16T09:30:00\", \n    \"observacoes\": \"Consulta REMARCADA via Postman (Kafka)\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/consultas/1", 
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"consultas",
+						"1" 
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Excluir Consulta",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/consultas/1", 
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"consultas",
+						"1" 
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

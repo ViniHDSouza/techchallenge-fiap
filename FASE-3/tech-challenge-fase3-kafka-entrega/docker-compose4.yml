@@ -1,0 +1,185 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.2
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - minha-rede
+    healthcheck:
+      test: ["CMD", "zkOk.sh", "-p", "2181"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  kafka:
+    image: confluentinc/cp-kafka:7.3.2
+    container_name: kafka
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    networks:
+      - minha-rede
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  mysql-agendamento:
+    image: mysql:8.0
+    container_name: mysql-agendamento
+    restart: always
+    environment:
+      MYSQL_DATABASE: agendamento_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_agendamento_data:/var/lib/mysql
+    networks:
+      - minha-rede
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-uroot", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  mysql-historico:
+    image: mysql:8.0
+    container_name: mysql-historico
+    restart: always
+    environment:
+      MYSQL_DATABASE: historico_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_historico_data:/var/lib/mysql
+    networks:
+      - minha-rede
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-uroot", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  agendamento-service:
+    build:
+      context: ./agendamento-service
+      dockerfile: Dockerfile
+    container_name: agendamento-service
+    depends_on:
+      mysql-agendamento:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-agendamento:3306/agendamento_db?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_TOPIC_CONSULTA_NOME: consultas.topic
+    networks:
+      - minha-rede
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  notificacao-service:
+    build:
+      context: ./notificacao-service
+      dockerfile: Dockerfile
+    container_name: notificacao-service
+    depends_on:
+      kafka:
+        condition: service_healthy
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_TOPIC_CONSULTA_NOME: consultas.topic
+    networks:
+      - minha-rede
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  historico-service:
+    build:
+      context: ./historico-service
+      dockerfile: Dockerfile
+    container_name: historico-service
+    depends_on:
+      mysql-historico:
+        condition: service_healthy
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-historico:3306/historico_db?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+    networks:
+      - minha-rede
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    container_name: kafdrop
+    ports:
+      - "9000:9000"
+    environment:
+      KAFKA_BROKER_CONNECT: "kafka:9092"
+      JVM_OPTS: "-Xms32M -Xmx64M"
+    depends_on:
+      kafka:
+        condition: service_healthy
+    networks:
+      - minha-rede
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  mysql_agendamento_data:
+  mysql_historico_data:
+
+networks:
+  minha-rede:
+    driver: bridge
