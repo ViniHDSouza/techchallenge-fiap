@@ -119,9 +119,9 @@ tech-challenge-fase3-kafka/
 
 ## Observações
 
-*   **Comentários e Logs:** Todo o código-fonte inclui comentários e gera logs em **português do Brasil**.
-*   **Autenticação:** Conforme solicitado, não foi implementada autenticação/autorização (Spring Security).
-*   **Sincronização de Dados:** Este exemplo assume que os dados entre `agendamento-service` e `historico-service` são consistentes. Em um cenário real, seria necessária uma estratégia de sincronização (ex: CDC com Debezium, eventos Kafka adicionais, API interna).
-*   **Tratamento de Erros Kafka:** A implementação atual possui tratamento básico de erros no producer e consumer Kafka (logs). Em produção, estratégias mais robustas como retentativas e Dead Letter Queues (DLQ) seriam recomendadas.
+*   **Comentários e Logs:** Todo o código-fonte inclui comentários e gera logs
+
+*   **Sincronização de Dados:** Este exemplo assume que os dados entre `agendamento-service` e `historico-service` são consistentes. 
+*   **Tratamento de Erros Kafka:** A implementação atual possui tratamento básico de erros no producer e consumer Kafka (logs). 
 *   **Testes:** Foram implementados testes unitários e de integração, incluindo testes com Kafka embarcado e GraphQL Tester. A cobertura de testes é monitorada via JaCoCo.
 
